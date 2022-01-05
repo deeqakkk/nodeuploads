@@ -18,12 +18,12 @@ const upload = multer({
   fileFilter: function(req, file, cb){
     checkFileType(file, cb);
   }
-}).single('myImage');
+}).single('documents');
 
 // Check File Type
 function checkFileType(file, cb){
   // Allowed ext
-  const filetypes = /jpeg|jpg|png|gif/;
+  const filetypes = /pdf/;
   // Check ext
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   // Check mime
@@ -32,7 +32,7 @@ function checkFileType(file, cb){
   if(mimetype && extname){
     return cb(null,true);
   } else {
-    cb('Error: Images Only!');
+    cb('Error: PDF Only!');
   }
 }
 
@@ -59,6 +59,7 @@ app.post('/upload', (req, res) => {
           msg: 'Error: No File Selected!'
         });
       } else {
+        console.log("uploads/",req.file.filename);
         res.render('index', {
           msg: 'File Uploaded!',
           file: `uploads/${req.file.filename}`
